@@ -1,16 +1,102 @@
-# React + Vite
+# BugTrail
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+BugTrail is a small QA reporting app for website testing. It is intended to be useful enough for real project notes while staying small enough to learn React, GitHub workflows, GitHub Actions, branch protection, pull requests, and deployment.
 
-Currently, two official plugins are available:
+The app will let a developer or tester create QA projects, add website bugs or UI issues, track status and priority, filter issues, and later export a clean PDF report or share a read-only client view.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Current Status
 
-## React Compiler
+This repository currently contains the first React frontend setup using Vite.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Planned first implementation phase:
 
-## Expanding the ESLint configuration
+1. Projects page
+2. Create project form
+3. Single project page
+4. Issue cards
+5. Create issue form
+6. Status, priority, and device filters
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+PDF export, read-only client sharing, backend APIs, and authentication are later phases.
+
+## Tech Stack
+
+- React
+- Vite
+- JavaScript
+- ESLint
+- GitHub Actions, planned
+
+## Getting Started
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the local development server:
+
+```bash
+npm run dev
+```
+
+Create a production build:
+
+```bash
+npm run build
+```
+
+Preview the production build locally:
+
+```bash
+npm run preview
+```
+
+Run lint checks:
+
+```bash
+npm run lint
+```
+
+## Project Scope
+
+A QA project should include information such as:
+
+- project name
+- client name
+- website URL
+- testing type or short description
+- testing date
+
+An issue should include:
+
+- title
+- description
+- priority
+- status
+- device
+- page URL or page name
+- notes
+- created date
+
+Supported issue priorities:
+
+- Low
+- Medium
+- High
+- Critical
+
+Supported issue statuses:
+
+- Open
+- In Progress
+- Fixed
+- Retest Needed
+- Closed
+
+Supported devices:
+
+- Desktop
+- Tablet
+- Mobile
