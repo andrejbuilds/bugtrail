@@ -91,6 +91,7 @@ body,
   border-radius: 6px;
   color: #d7d7d7;
   cursor: pointer;
+  text-decoration: none;
   position: relative;
   overflow: hidden;
   transition: background 0.15s ease, color 0.15s ease;
