@@ -1,4 +1,5 @@
 import IssueListItem from "../components/IssueListItem";
+import "../styles/issues.css";
 
 const issueTabs = [
   { label: "All", count: 47 },
@@ -159,7 +160,9 @@ function Issues() {
         <div className="issues_filters">
           {issueFilters.map((filter) => (
             <button key={filter.label} type="button" className="issue_filter_button">
-              <span>{filter.label}: {filter.value}</span>
+              <span>
+                {filter.label}: {filter.value}
+              </span>
               <ChevronIcon />
             </button>
           ))}

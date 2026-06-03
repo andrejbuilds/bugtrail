@@ -21,7 +21,9 @@ function IssueListItem({
           <div className="issue_reporter_avatar" aria-hidden="true">
             {reporter.charAt(0)}
           </div>
-          <p className="issue_meta_text">{openedAt} by {reporter}</p>
+          <p className="issue_meta_text">
+            {openedAt} by {reporter}
+          </p>
         </div>
       </div>
       <div className="issue_status_cell">

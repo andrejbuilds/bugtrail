@@ -1,4 +1,5 @@
 import ReportCard from "../components/ReportCard";
+import "../styles/reports.css";
 
 const reportTabs = ["Drafts", "Published", "Archived"];
 

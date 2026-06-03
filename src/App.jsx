@@ -15,8 +15,7 @@ import reports_icon from "./assets/reports_icon.png";
 import settings_icon from "./assets/settings_icon.png";
 import default_profile from "./assets/default_profile.png";
 
-import "./App.css";
-import "./Dashboard.css";
+import "./styles/app-shell.css";
 
 function SidebarLink({ to, baseClass, icon, label, onNavigate }) {
   return (

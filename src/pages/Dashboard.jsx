@@ -4,6 +4,7 @@ import issues_card_icon from "../assets/issues_card_icon.png";
 import resolved_card_icon from "../assets/resolved_card_icon.png";
 import client_card_icon from "../assets/client_card_icon.png";
 import DashboardSummaryCard from "../components/DashboardSummaryCard";
+import "../styles/dashboard.css";
 
 const summaryCards = [
   {

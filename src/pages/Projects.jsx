@@ -1,4 +1,5 @@
 import ProjectsTableRow from "../components/ProjectsTableRow";
+import "../styles/projects.css";
 
 const projectFilters = ["All", "Active", "Archived"];
 

@@ -1,0 +1,387 @@
+.issues_page {
+  max-width: 1160px;
+}
+
+.issues_header {
+  align-items: flex-start;
+}
+
+.issues_new_button {
+  gap: 10px;
+  min-width: 176px;
+}
+
+.issue_tabs {
+  display: flex;
+  align-items: flex-end;
+  gap: 28px;
+  margin-top: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #2b2d31;
+}
+
+.issue_tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 0 2px;
+  border: none;
+  background: transparent;
+  color: #bcbec5;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.issue_tab_count {
+  color: inherit;
+}
+
+.issue_tab:hover,
+.issue_tab.active {
+  color: #ffffff;
+}
+
+.issue_tab.active::after {
+  content: "";
+  position: absolute;
+  left: -8px;
+  right: -8px;
+  bottom: -18px;
+  height: 4px;
+  border-radius: 999px;
+  background: #f2f2f2;
+}
+
+.issues_toolbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.issues_search {
+  flex: 1;
+  min-width: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 16px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015)), #121315;
+  border: 1px solid #2d2f33;
+  border-radius: 10px;
+  color: #8f9198;
+}
+
+.issues_search:focus-within {
+  border-color: #41444a;
+  box-shadow: 0 0 0 1px rgba(65, 68, 74, 0.45);
+}
+
+.issues_search_icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.issues_search input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: #f4f4f5;
+  font-size: 15px;
+  outline: none;
+}
+
+.issues_search input::placeholder {
+  color: #8f9198;
+}
+
+.issues_filters {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.issue_filter_button {
+  min-width: 176px;
+  height: 52px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  border: 1px solid #2d2f33;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015)), #121315;
+  color: #d9dade;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.issue_filter_button:hover {
+  color: #ffffff;
+  border-color: #3b3e45;
+}
+
+.issue_filter_chevron {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: #a5a8b0;
+}
+
+.issues_list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.issue_list_item {
+  min-height: 106px;
+  display: grid;
+  grid-template-columns: 16px 124px minmax(0, 1fr) auto;
+  align-items: start;
+  column-gap: 12px;
+  padding: 16px 18px 16px 20px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.028), rgba(255, 255, 255, 0.012)), #101112;
+  border: 1px solid #2b2d31;
+  border-radius: 10px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 10px 26px rgba(0, 0, 0, 0.14);
+}
+
+.issue_priority_dot {
+  width: 12px;
+  height: 12px;
+  margin-top: 10px;
+  border-radius: 50%;
+}
+
+.issue_priority_critical {
+  background: #ff4a44;
+  box-shadow: 0 0 14px rgba(255, 74, 68, 0.35);
+}
+
+.issue_priority_medium {
+  background: #ffb42b;
+  box-shadow: 0 0 14px rgba(255, 180, 43, 0.3);
+}
+
+.issue_priority_review {
+  background: #4b8cff;
+  box-shadow: 0 0 14px rgba(75, 140, 255, 0.28);
+}
+
+.issue_id {
+  padding-top: 2px;
+  color: #b8bac2;
+  font-size: 17px;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+
+.issue_main {
+  min-width: 0;
+}
+
+.issue_title {
+  margin: 0;
+  color: #f7f7f8;
+  font-size: 18px;
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+.issue_project_tag {
+  width: fit-content;
+  margin-top: 8px;
+  padding: 5px 11px;
+  border: 1px solid #3a3d44;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #e5e6ea;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.issue_meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.issue_reporter_avatar {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #f1d4be, #b57857);
+  color: #2c1a10;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.issue_meta_text {
+  margin: 0;
+  color: #aeb1b8;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.issue_status_cell {
+  align-self: center;
+  padding-left: 18px;
+}
+
+.issue_status_pill {
+  min-width: 92px;
+  height: 36px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.issue_status_pill_open {
+  background: rgba(135, 19, 19, 0.18);
+  border: 1px solid rgba(255, 95, 95, 0.32);
+  color: #ff7b72;
+}
+
+.issue_status_pill_review {
+  background: rgba(20, 75, 175, 0.16);
+  border: 1px solid rgba(77, 141, 255, 0.3);
+  color: #69a4ff;
+}
+
+.issue_status_pill_fixed {
+  background: rgba(8, 116, 52, 0.18);
+  border: 1px solid rgba(59, 220, 121, 0.28);
+  color: #52de89;
+}
+
+@media (max-width: 1200px) {
+  .issues_page {
+    max-width: none;
+  }
+
+  .issues_toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .issues_filters {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .issue_filter_button {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .issue_tabs {
+    gap: 18px;
+    overflow-x: auto;
+    padding-bottom: 14px;
+  }
+
+  .issues_toolbar {
+    gap: 12px;
+  }
+
+  .issues_filters {
+    grid-template-columns: 1fr;
+  }
+
+  .issue_list_item {
+    grid-template-columns: 16px 1fr;
+    row-gap: 12px;
+    padding: 16px;
+  }
+
+  .issue_id {
+    padding-top: 0;
+  }
+
+  .issue_main {
+    grid-column: 2;
+  }
+
+  .issue_status_cell {
+    grid-column: 2;
+    padding-left: 0;
+    justify-self: start;
+  }
+}
+
+@media (min-width: 1440px) {
+  .issues_page {
+    max-width: 1320px;
+  }
+
+  .issue_tabs {
+    gap: 34px;
+    margin-top: 30px;
+  }
+
+  .issue_tab {
+    font-size: 16px;
+  }
+
+  .issues_toolbar {
+    gap: 18px;
+  }
+
+  .issues_search,
+  .issue_filter_button {
+    height: 56px;
+  }
+
+  .issue_filter_button {
+    min-width: 186px;
+    font-size: 16px;
+  }
+
+  .issues_list {
+    gap: 12px;
+    margin-top: 14px;
+  }
+
+  .issue_list_item {
+    min-height: 114px;
+    padding: 18px 20px 18px 22px;
+  }
+
+  .issue_id {
+    font-size: 18px;
+  }
+
+  .issue_title {
+    font-size: 19px;
+  }
+
+  .issue_meta_text {
+    font-size: 15px;
+  }
+
+  .issue_status_pill {
+    min-width: 98px;
+    height: 38px;
+    font-size: 15px;
+  }
+}
