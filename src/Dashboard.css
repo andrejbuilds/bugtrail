@@ -271,10 +271,7 @@ body,
   margin-top: 32px;
 }
 
-.projects_card,
-.issues_card,
-.resolved_card,
-.client_card {
+.summary_card {
   width: auto;
   min-height: 220px;
   padding: 22px 20px;
@@ -294,10 +291,7 @@ body,
     0 10px 30px rgba(0, 0, 0, 0.25);
 }
 
-.projects_card_icon,
-.issues_card_icon,
-.resolved_card_icon,
-.client_card_icon {
+.summary_card_icon {
   width: 46px;
   height: 46px;
   object-fit: contain;
@@ -306,10 +300,12 @@ body,
   opacity: 0.85;
 }
 
-.project_card_number,
-.issues_card_number,
-.resolved_card_number,
-.client_card_number {
+.summary_card_icon_large {
+  width: 56px;
+  height: 56px;
+}
+
+.summary_card_value {
   margin: 0 0 10px;
   font-size: 34px;
   line-height: 1;
@@ -318,10 +314,7 @@ body,
   font-family: "Montserrat", system-ui, sans-serif;
 }
 
-.projects_card_heading,
-.issues_card_heading,
-.resolved_card_heading,
-.client_card_heading {
+.summary_card_title {
   margin: 0 0 8px;
   font-size: 16px;
   line-height: 1;
@@ -330,10 +323,7 @@ body,
   font-family: "Montserrat", system-ui, sans-serif;
 }
 
-.projects_card_sub_heading,
-.issues_card_sub_heading,
-.resolved_card_sub_heading,
-.client_card_sub_heading {
+.summary_card_description {
   margin: 0 0 16px;
   font-size: 13px;
   line-height: 1.35;
@@ -342,10 +332,7 @@ body,
   font-family: "Montserrat", system-ui, sans-serif;
 }
 
-.projects_card_pill,
-.issues_card_pill,
-.resolved_card_pill,
-.client_card_pill {
+.summary_card_pill {
   width: fit-content;
   padding: 7px 14px;
   border-radius: 999px;
@@ -354,40 +341,7 @@ body,
   line-height: 1;
   font-weight: 500;
   font-family: "Montserrat", system-ui, sans-serif;
-}
-
-.projects_card_pill {
-  background: #2a2b2e;
-  color: #d9d9d9;
-}
-
-.issues_card_icon,
-.resolved_card_icon,
-.client_card_icon {
   opacity: 0.95;
-}
-
-.issues_card_icon {
-  width: 56px;
-  height: 56px;
-}
-
-.issues_card_pill {
-  background: rgba(245, 190, 78, 0.12);
-  border: 1px solid rgba(245, 190, 78, 0.35);
-  color: #ffd36c;
-}
-
-.resolved_card_pill {
-  background: rgba(83, 209, 127, 0.12);
-  border: 1px solid rgba(83, 209, 127, 0.35);
-  color: #8ef0a5;
-}
-
-.client_card_pill {
-  background: rgba(76, 157, 255, 0.12);
-  border: 1px solid rgba(76, 157, 255, 0.35);
-  color: #79bbff;
 }
 
 /* =========================
@@ -553,6 +507,278 @@ body,
 }
 
 /* =========================
+   PROJECTS PAGE
+   ========================= */
+
+.projects_page {
+  max-width: 1120px;
+}
+
+.projects_header {
+  align-items: flex-start;
+}
+
+.projects_new_button {
+  gap: 10px;
+  min-width: 186px;
+}
+
+.project_button_icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.projects_toolbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 34px;
+}
+
+.projects_search {
+  flex: 1;
+  min-width: 0;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 16px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015)), #121315;
+  border: 1px solid #2d2f33;
+  border-radius: 9px;
+  color: #8f9198;
+}
+
+.projects_search:focus-within {
+  border-color: #41444a;
+  box-shadow: 0 0 0 1px rgba(65, 68, 74, 0.45);
+}
+
+.project_search_icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.projects_search input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: #f4f4f5;
+  font-family: "Montserrat", system-ui, sans-serif;
+  font-size: 15px;
+  outline: none;
+}
+
+.projects_search input::placeholder {
+  color: #8f9198;
+}
+
+.projects_filters {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px;
+  background: #0f1012;
+  border: 1px solid #2d2f33;
+  border-radius: 9px;
+}
+
+.project_filter {
+  min-width: 82px;
+  height: 46px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: #c2c4cb;
+  font-family: "Montserrat", system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.project_filter:hover {
+  color: #ffffff;
+}
+
+.project_filter.active {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.025)), #1b1d21;
+  color: #ffffff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.projects_table_shell {
+  margin-top: 26px;
+}
+
+.projects_table {
+  width: 100%;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015)), #101112;
+  border: 1px solid #2c2e32;
+  border-radius: 12px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 12px 34px rgba(0, 0, 0, 0.24);
+}
+
+.project_table_header,
+.project_table_row {
+  display: grid;
+  grid-template-columns: minmax(260px, 2.3fr) minmax(180px, 1.5fr) 110px 110px 140px 140px;
+  align-items: center;
+  column-gap: 14px;
+}
+
+.project_table_header {
+  min-height: 70px;
+  padding: 0 28px;
+  color: #d8d8db;
+  font-size: 14px;
+  font-weight: 500;
+  border-bottom: 1px solid #2a2c30;
+}
+
+.project_table_row {
+  min-height: 76px;
+  padding: 0 28px;
+  color: #f1f1f1;
+  border-bottom: 1px solid #24262a;
+}
+
+.project_table_row:last-child {
+  border-bottom: none;
+}
+
+.project_table_row_highlighted {
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.project_name_cell {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.project_badge {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  flex-shrink: 0;
+}
+
+.project_badge_blue {
+  background: linear-gradient(180deg, #3694ff, #196ef0);
+}
+
+.project_badge_purple {
+  background: linear-gradient(180deg, #8a5dff, #5a35df);
+}
+
+.project_badge_green {
+  background: linear-gradient(180deg, #36d65d, #119c34);
+}
+
+.project_badge_orange {
+  background: linear-gradient(180deg, #ffad4f, #ff7b29);
+}
+
+.project_badge_teal {
+  background: linear-gradient(180deg, #30d3d9, #1aa2b4);
+}
+
+.project_badge_red {
+  background: linear-gradient(180deg, #ff6767, #ff3232);
+}
+
+.project_name_text,
+.project_website_text,
+.project_number_text,
+.project_updated_text {
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+.project_name_text {
+  color: #f5f5f6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.project_website_text,
+.project_updated_text {
+  color: #d5d5d8;
+}
+
+.project_number_text {
+  color: #f2f2f3;
+}
+
+.project_status_pill {
+  width: fit-content;
+  min-width: 95px;
+  height: 36px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.project_status_dot {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.project_status_pill_warning {
+  color: #ffc83f;
+  background: rgba(157, 108, 7, 0.18);
+  border: 1px solid rgba(255, 194, 51, 0.24);
+}
+
+.project_status_pill_warning .project_status_dot {
+  background: #ffbf2f;
+  box-shadow: 0 0 12px rgba(255, 191, 47, 0.45);
+}
+
+.project_status_pill_success {
+  color: #33e15f;
+  background: rgba(5, 112, 35, 0.2);
+  border: 1px solid rgba(51, 225, 95, 0.22);
+}
+
+.project_status_pill_success .project_status_dot {
+  background: #14cf46;
+  box-shadow: 0 0 12px rgba(20, 207, 70, 0.4);
+}
+
+.project_status_pill_danger {
+  color: #ff6969;
+  background: rgba(130, 14, 14, 0.2);
+  border: 1px solid rgba(255, 105, 105, 0.24);
+}
+
+.project_status_pill_danger .project_status_dot {
+  background: #ff4a4a;
+  box-shadow: 0 0 12px rgba(255, 74, 74, 0.4);
+}
+
+/* =========================
    TABLET / SMALL LAPTOP SAFETY
    ========================= */
 
@@ -564,6 +790,28 @@ body,
 
   .cards {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .projects_page {
+    max-width: none;
+  }
+
+  .projects_toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .projects_filters {
+    width: fit-content;
+  }
+
+  .projects_table_shell {
+    overflow-x: auto;
+    padding-bottom: 6px;
+  }
+
+  .projects_table {
+    min-width: 940px;
   }
 }
 
@@ -695,10 +943,27 @@ body,
     margin-top: 28px;
   }
 
-  .projects_card,
-  .issues_card,
-  .resolved_card,
-  .client_card {
+  .projects_toolbar {
+    margin-top: 28px;
+    gap: 12px;
+  }
+
+  .projects_filters {
+    width: 100%;
+  }
+
+  .project_filter {
+    flex: 1;
+    min-width: 0;
+    padding: 0 12px;
+  }
+
+  .projects_new_button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .summary_card {
     min-height: 190px;
   }
 
@@ -814,58 +1079,90 @@ body,
     margin-top: 36px;
   }
 
-  .projects_card,
-  .issues_card,
-  .resolved_card,
-  .client_card {
+  .projects_page {
+    max-width: 1320px;
+  }
+
+  .projects_toolbar {
+    gap: 16px;
+    margin-top: 38px;
+  }
+
+  .projects_search {
+    height: 58px;
+    border-radius: 10px;
+  }
+
+  .project_filter {
+    min-width: 94px;
+    height: 50px;
+    font-size: 16px;
+  }
+
+  .project_table_header {
+    min-height: 78px;
+    padding: 0 32px;
+    font-size: 16px;
+  }
+
+  .project_table_row {
+    min-height: 84px;
+    padding: 0 32px;
+  }
+
+  .project_badge {
+    width: 40px;
+    height: 40px;
+    font-size: 21px;
+  }
+
+  .project_name_text,
+  .project_website_text,
+  .project_number_text,
+  .project_updated_text {
+    font-size: 16px;
+  }
+
+  .project_status_pill {
+    min-width: 106px;
+    height: 40px;
+    font-size: 15px;
+  }
+
+  .summary_card {
     min-height: 290px;
     padding: 32px 28px 28px;
     border-radius: 7px;
   }
 
-  .projects_card_icon,
-  .issues_card_icon,
-  .resolved_card_icon,
-  .client_card_icon {
+  .summary_card_icon {
     width: 54px;
     height: 54px;
     margin-bottom: 34px;
   }
 
-  .issues_card_icon {
+  .summary_card_icon_large {
     width: 64px;
     height: 64px;
   }
 
-  .project_card_number,
-  .issues_card_number,
-  .resolved_card_number,
-  .client_card_number {
+  .summary_card_value {
     margin-bottom: 18px;
     font-size: 48px;
   }
 
-  .projects_card_heading,
-  .issues_card_heading,
-  .resolved_card_heading,
-  .client_card_heading {
+  .summary_card_title {
     margin-bottom: 12px;
     font-size: 20px;
   }
 
-  .projects_card_sub_heading,
-  .issues_card_sub_heading,
-  .resolved_card_sub_heading,
-  .client_card_sub_heading {
+  .summary_card_description {
     margin-bottom: 22px;
     font-size: 16px;
     line-height: 1.35;
   }
 
-  .projects_card_pill,
-  .issues_card_pill,
-  .resolved_card_pill,
-  .client_card_pill {
+  .summary_card_pill {
     padding: 10px 18px;
     font-size: 15px;
   }

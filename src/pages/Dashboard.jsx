@@ -3,6 +3,58 @@ import projects_card_icon from "../assets/projects_card_icon.png";
 import issues_card_icon from "../assets/issues_card_icon.png";
 import resolved_card_icon from "../assets/resolved_card_icon.png";
 import client_card_icon from "../assets/client_card_icon.png";
+import DashboardSummaryCard from "../components/DashboardSummaryCard";
+
+const summaryCards = [
+  {
+    icon: projects_card_icon,
+    value: "0",
+    title: "Projects",
+    description: "Active QA projects",
+    pillText: "No Projects",
+    pillStyle: {
+      background: "#2a2b2e",
+      color: "#d9d9d9",
+    },
+  },
+  {
+    icon: issues_card_icon,
+    value: "0",
+    title: "Open Issues",
+    description: "Waiting to be fixed",
+    pillText: "All clear",
+    pillStyle: {
+      background: "rgba(245, 190, 78, 0.12)",
+      border: "1px solid rgba(245, 190, 78, 0.35)",
+      color: "#ffd36c",
+    },
+    iconClassName: "summary_card_icon_large",
+  },
+  {
+    icon: resolved_card_icon,
+    value: "0",
+    title: "Fixed Issues",
+    description: "Marked as resolved",
+    pillText: "0 resolved",
+    pillStyle: {
+      background: "rgba(83, 209, 127, 0.12)",
+      border: "1px solid rgba(83, 209, 127, 0.35)",
+      color: "#8ef0a5",
+    },
+  },
+  {
+    icon: client_card_icon,
+    value: "0",
+    title: "Client Reports",
+    description: "Reports ready to share",
+    pillText: "None ready",
+    pillStyle: {
+      background: "rgba(76, 157, 255, 0.12)",
+      border: "1px solid rgba(76, 157, 255, 0.35)",
+      color: "#79bbff",
+    },
+  },
+];
 
 function Dashboard() {
   return (
@@ -17,34 +69,9 @@ function Dashboard() {
         </div>
       </div>
       <div className="cards">
-        <div className="projects_card">
-          <img className="projects_card_icon" src={projects_card_icon} alt="" />
-          <h1 className="project_card_number">0</h1>
-          <p className="projects_card_heading">Projects</p>
-          <p className="projects_card_sub_heading">Active QA projects</p>
-          <div className="projects_card_pill">No Projects</div>
-        </div>
-        <div className="issues_card">
-          <img className="issues_card_icon" src={issues_card_icon} alt="" />
-          <h1 className="issues_card_number">0</h1>
-          <p className="issues_card_heading">Open Issues</p>
-          <p className="issues_card_sub_heading">Waiting to be fixed</p>
-          <div className="issues_card_pill">All clear</div>
-        </div>
-        <div className="resolved_card">
-          <img className="resolved_card_icon" src={resolved_card_icon} alt="" />
-          <h1 className="resolved_card_number">0</h1>
-          <p className="resolved_card_heading">Fixed Issues</p>
-          <p className="resolved_card_sub_heading">Marked as resolved</p>
-          <div className="resolved_card_pill">0 resolved</div>
-        </div>
-        <div className="client_card">
-          <img className="client_card_icon" src={client_card_icon} alt="" />
-          <h1 className="client_card_number">0</h1>
-          <p className="client_card_heading">Client Reports</p>
-          <p className="client_card_sub_heading">Reports ready to share</p>
-          <div className="client_card_pill">None ready</div>
-        </div>
+        {summaryCards.map((card) => (
+          <DashboardSummaryCard key={card.title} {...card} />
+        ))}
       </div>
       <div className="recent_projects_area">
         <h3 className="recent_projects_h3">Recent Projects</h3>
