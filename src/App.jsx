@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BrowserRouter, NavLink, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Navigate, NavLink, Routes, Route } from "react-router-dom";
 
 import Dashboard from "./pages/Dashboard";
 import Projects from "./pages/Projects";
@@ -120,7 +120,8 @@ function App() {
             <Route path="/projects" element={<Projects />} />
             <Route path="/issues" element={<Issues />} />
             <Route path="/reports" element={<Reports />} />
-            <Route path="/settings" element={<Settings />} />
+            <Route path="/settings" element={<Navigate to="/settings/profile" replace />} />
+            <Route path="/settings/:section" element={<Settings />} />
           </Routes>
         </div>
       </div>
