@@ -1,4 +1,7 @@
+import { useState } from "react";
+
 import IssueListItem from "../components/IssueListItem";
+import ReportIssueModal from "../components/ReportIssueModal";
 import "../styles/issues.css";
 
 const issueTabs = [
@@ -122,59 +125,66 @@ function ChevronIcon() {
 }
 
 function Issues() {
+  const [isReportIssueModalOpen, setIsReportIssueModalOpen] = useState(false);
+  const openReportIssueModal = () => setIsReportIssueModalOpen(true);
+  const closeReportIssueModal = () => setIsReportIssueModalOpen(false);
+
   return (
-    <div className="main_content issues_page">
-      <div className="main_header issues_header">
-        <div className="header_one">
-          <h1 className="dashboard_heading">Issues</h1>
-          <p className="dashboard_sub_heading">Track and resolve issues across all projects</p>
+    <>
+      <div className="main_content issues_page">
+        <div className="main_header issues_header">
+          <div className="header_one">
+            <h1 className="dashboard_heading">Issues</h1>
+            <p className="dashboard_sub_heading">Track and resolve issues across all projects</p>
+          </div>
+          <div className="header_two">
+            <button className="new_project_btn issues_new_button" onClick={openReportIssueModal}>
+              <PlusIcon />
+              Report Issue
+            </button>
+          </div>
         </div>
-        <div className="header_two">
-          <button className="new_project_btn issues_new_button">
-            <PlusIcon />
-            Report Issue
-          </button>
-        </div>
-      </div>
 
-      <div className="issue_tabs" role="tablist" aria-label="Issue status tabs">
-        {issueTabs.map((tab) => (
-          <button
-            key={tab.label}
-            type="button"
-            className={tab.active ? "issue_tab active" : "issue_tab"}
-            aria-pressed={Boolean(tab.active)}
-          >
-            <span>{tab.label}</span>
-            <span className="issue_tab_count">{tab.count}</span>
-          </button>
-        ))}
-      </div>
-
-      <div className="issues_toolbar">
-        <label className="issues_search" aria-label="Search issues">
-          <SearchIcon />
-          <input type="text" placeholder="Search issues..." />
-        </label>
-
-        <div className="issues_filters">
-          {issueFilters.map((filter) => (
-            <button key={filter.label} type="button" className="issue_filter_button">
-              <span>
-                {filter.label}: {filter.value}
-              </span>
-              <ChevronIcon />
+        <div className="issue_tabs" role="tablist" aria-label="Issue status tabs">
+          {issueTabs.map((tab) => (
+            <button
+              key={tab.label}
+              type="button"
+              className={tab.active ? "issue_tab active" : "issue_tab"}
+              aria-pressed={Boolean(tab.active)}
+            >
+              <span>{tab.label}</span>
+              <span className="issue_tab_count">{tab.count}</span>
             </button>
           ))}
         </div>
-      </div>
 
-      <div className="issues_list">
-        {issues.map((issue) => (
-          <IssueListItem key={issue.issueId} {...issue} />
-        ))}
+        <div className="issues_toolbar">
+          <label className="issues_search" aria-label="Search issues">
+            <SearchIcon />
+            <input type="text" placeholder="Search issues..." />
+          </label>
+
+          <div className="issues_filters">
+            {issueFilters.map((filter) => (
+              <button key={filter.label} type="button" className="issue_filter_button">
+                <span>
+                  {filter.label}: {filter.value}
+                </span>
+                <ChevronIcon />
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="issues_list">
+          {issues.map((issue) => (
+            <IssueListItem key={issue.issueId} {...issue} />
+          ))}
+        </div>
       </div>
-    </div>
+      {isReportIssueModalOpen && <ReportIssueModal onClose={closeReportIssueModal} />}
+    </>
   );
 }
 

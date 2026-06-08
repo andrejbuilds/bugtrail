@@ -1,3 +1,6 @@
+import { useState } from "react";
+
+import CreateProjectModal from "../components/CreateProjectModal";
 import ProjectsTableRow from "../components/ProjectsTableRow";
 import "../styles/projects.css";
 
@@ -104,60 +107,67 @@ function PlusIcon() {
 }
 
 function Projects() {
+  const [isCreateProjectModalOpen, setIsCreateProjectModalOpen] = useState(false);
+  const openCreateProjectModal = () => setIsCreateProjectModalOpen(true);
+  const closeCreateProjectModal = () => setIsCreateProjectModalOpen(false);
+
   return (
-    <div className="main_content projects_page">
-      <div className="main_header projects_header">
-        <div className="header_one">
-          <h1 className="dashboard_heading">Projects</h1>
-          <p className="dashboard_sub_heading">All QA projects you're tracking</p>
-        </div>
-        <div className="header_two">
-          <button className="new_project_btn projects_new_button">
-            <PlusIcon />
-            New Project
-          </button>
-        </div>
-      </div>
-
-      <div className="projects_toolbar">
-        <label className="projects_search" aria-label="Search projects">
-          <SearchIcon />
-          <input type="text" placeholder="Search projects..." />
-        </label>
-
-        <div className="projects_filters" role="tablist" aria-label="Project filters">
-          {projectFilters.map((filter, index) => (
-            <button
-              key={filter}
-              type="button"
-              className={index === 0 ? "project_filter active" : "project_filter"}
-              aria-pressed={index === 0}
-            >
-              {filter}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="projects_table_shell">
-        <div className="projects_table">
-          <div className="project_table_header">
-            <span>Project name</span>
-            <span>Website</span>
-            <span>Open</span>
-            <span>Fixed</span>
-            <span>Status</span>
-            <span>Last updated</span>
+    <>
+      <div className="main_content projects_page">
+        <div className="main_header projects_header">
+          <div className="header_one">
+            <h1 className="dashboard_heading">Projects</h1>
+            <p className="dashboard_sub_heading">All QA projects you're tracking</p>
           </div>
+          <div className="header_two">
+            <button className="new_project_btn projects_new_button" onClick={openCreateProjectModal}>
+              <PlusIcon />
+              New Project
+            </button>
+          </div>
+        </div>
 
-          <div className="project_table_body">
-            {projectRows.map((project) => (
-              <ProjectsTableRow key={project.name} {...project} />
+        <div className="projects_toolbar">
+          <label className="projects_search" aria-label="Search projects">
+            <SearchIcon />
+            <input type="text" placeholder="Search projects..." />
+          </label>
+
+          <div className="projects_filters" role="tablist" aria-label="Project filters">
+            {projectFilters.map((filter, index) => (
+              <button
+                key={filter}
+                type="button"
+                className={index === 0 ? "project_filter active" : "project_filter"}
+                aria-pressed={index === 0}
+              >
+                {filter}
+              </button>
             ))}
           </div>
         </div>
+
+        <div className="projects_table_shell">
+          <div className="projects_table">
+            <div className="project_table_header">
+              <span>Project name</span>
+              <span>Website</span>
+              <span>Open</span>
+              <span>Fixed</span>
+              <span>Status</span>
+              <span>Last updated</span>
+            </div>
+
+            <div className="project_table_body">
+              {projectRows.map((project) => (
+                <ProjectsTableRow key={project.name} {...project} />
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+      {isCreateProjectModalOpen && <CreateProjectModal onClose={closeCreateProjectModal} />}
+    </>
   );
 }
 

@@ -16,6 +16,7 @@ import settings_icon from "./assets/settings_icon.png";
 import default_profile from "./assets/default_profile.png";
 
 import "./styles/app-shell.css";
+import "./styles/modals.css";
 
 function SidebarLink({ to, baseClass, icon, label, onNavigate }) {
   return (
