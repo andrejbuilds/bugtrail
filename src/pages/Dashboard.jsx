@@ -8,9 +8,11 @@ import client_card_icon from "../assets/client_card_icon.png";
 import CreateProjectModal from "../components/projects/CreateProjectModal";
 import DashboardSummaryCard from "../components/DashboardSummaryCard";
 import AddIcon from "../components/shared/AddIcon";
+import { useBugTrail } from "../context/BugTrailContext";
 import "../styles/dashboard.css";
 
-function Dashboard({ projects, issues, reports, onCreateProject }) {
+function Dashboard() {
+  const { projects, issues, reports, createProject } = useBugTrail();
   const [isCreateProjectModalOpen, setIsCreateProjectModalOpen] = useState(false);
   const openCreateProjectModal = () => setIsCreateProjectModalOpen(true);
   const closeCreateProjectModal = () => setIsCreateProjectModalOpen(false);
@@ -120,7 +122,7 @@ function Dashboard({ projects, issues, reports, onCreateProject }) {
       {isCreateProjectModalOpen && (
         <CreateProjectModal
           onClose={closeCreateProjectModal}
-          onCreateProject={onCreateProject}
+          onCreateProject={createProject}
         />
       )}
     </>

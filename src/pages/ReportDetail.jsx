@@ -3,10 +3,12 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 import CreateReportModal from "../components/reports/CreateReportModal";
 import ReportProgressBar from "../components/reports/ReportProgressBar";
+import { useBugTrail } from "../context/BugTrailContext";
 import NotFound from "./NotFound";
 import "../styles/detail.css";
 
-function ReportDetail({ projects, reports, issues, onUpdateReport, onDeleteReport }) {
+function ReportDetail() {
+  const { projects, reports, issues, updateReport, deleteReport } = useBugTrail();
   const { reportId } = useParams();
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
@@ -26,7 +28,7 @@ function ReportDetail({ projects, reports, issues, onUpdateReport, onDeleteRepor
   const reportIssues = issues.filter((issue) => issue.projectId === report.projectId);
 
   function handleDelete() {
-    onDeleteReport(report.id);
+    deleteReport(report.id);
     navigate("/reports");
   }
 
@@ -116,7 +118,7 @@ function ReportDetail({ projects, reports, issues, onUpdateReport, onDeleteRepor
       {isEditing && (
         <CreateReportModal
           onClose={() => setIsEditing(false)}
-          onCreateReport={(reportData) => onUpdateReport(report.id, reportData)}
+          onCreateReport={(reportData) => updateReport(report.id, reportData)}
           projects={projects}
           initialData={report}
           title="Edit report"

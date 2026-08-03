@@ -5,10 +5,12 @@ import IssueListItem from "../components/issues/IssueListItem";
 import CreateProjectModal from "../components/projects/CreateProjectModal";
 import ReportCard from "../components/reports/ReportCard";
 import ProjectStatusPill from "../components/shared/ProjectStatusPill";
+import { useBugTrail } from "../context/BugTrailContext";
 import NotFound from "./NotFound";
 import "../styles/detail.css";
 
-function ProjectDetail({ projects, issues, reports, onUpdateProject, onDeleteProject }) {
+function ProjectDetail() {
+  const { projects, issues, reports, updateProject, deleteProject } = useBugTrail();
   const { projectId } = useParams();
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
@@ -29,7 +31,7 @@ function ProjectDetail({ projects, issues, reports, onUpdateProject, onDeletePro
   const projectReports = reports.filter((report) => report.projectId === project.id);
 
   function handleDelete() {
-    onDeleteProject(project.id);
+    deleteProject(project.id);
     navigate("/projects");
   }
 
@@ -133,7 +135,7 @@ function ProjectDetail({ projects, issues, reports, onUpdateProject, onDeletePro
       {isEditing && (
         <CreateProjectModal
           onClose={() => setIsEditing(false)}
-          onCreateProject={(projectData) => onUpdateProject(project.id, projectData)}
+          onCreateProject={(projectData) => updateProject(project.id, projectData)}
           initialData={project}
           title="Edit project"
           description="Update the project details."

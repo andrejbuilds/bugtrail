@@ -4,9 +4,11 @@ import CreateReportModal from "../components/reports/CreateReportModal";
 import ReportGrid from "../components/reports/ReportGrid";
 import ReportTabs from "../components/reports/ReportTabs";
 import AddIcon from "../components/shared/AddIcon";
+import { useBugTrail } from "../context/BugTrailContext";
 import "../styles/reports.css";
 
-function Reports({ projects, reports, onCreateReport }) {
+function Reports() {
+  const { projects, reports, createReport } = useBugTrail();
   const [isCreateReportModalOpen, setIsCreateReportModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("Published");
   const openCreateReportModal = () => setIsCreateReportModalOpen(true);
@@ -14,7 +16,7 @@ function Reports({ projects, reports, onCreateReport }) {
   const filteredReports = reports.filter((report) => report.status === activeTab);
 
   function handleCreateReport(reportData) {
-    onCreateReport(reportData);
+    createReport(reportData);
     setActiveTab(reportData.status);
   }
 

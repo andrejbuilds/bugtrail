@@ -3,11 +3,13 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 import ReportIssueModal from "../components/issues/ReportIssueModal";
 import IssueStatusPill from "../components/shared/IssueStatusPill";
+import { useBugTrail } from "../context/BugTrailContext";
 import defaultProfile from "../assets/default_profile.png";
 import NotFound from "./NotFound";
 import "../styles/detail.css";
 
-function IssueDetail({ projects, issues, onUpdateIssue, onDeleteIssue, onAddIssueComment }) {
+function IssueDetail() {
+  const { projects, issues, updateIssue, deleteIssue, addIssueComment } = useBugTrail();
   const { issueId } = useParams();
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
@@ -26,7 +28,7 @@ function IssueDetail({ projects, issues, onUpdateIssue, onDeleteIssue, onAddIssu
   }
 
   function handleDelete() {
-    onDeleteIssue(issue.id);
+    deleteIssue(issue.id);
     navigate("/issues");
   }
 
@@ -37,7 +39,7 @@ function IssueDetail({ projects, issues, onUpdateIssue, onDeleteIssue, onAddIssu
       return;
     }
 
-    onAddIssueComment(issue.id, commentText);
+    addIssueComment(issue.id, commentText);
     setCommentText("");
   }
 
@@ -236,7 +238,7 @@ function IssueDetail({ projects, issues, onUpdateIssue, onDeleteIssue, onAddIssu
       {isEditing && (
         <ReportIssueModal
           onClose={() => setIsEditing(false)}
-          onCreateIssue={(issueData) => onUpdateIssue(issue.id, issueData)}
+          onCreateIssue={(issueData) => updateIssue(issue.id, issueData)}
           projects={projects}
           initialData={issue}
           title="Edit issue"

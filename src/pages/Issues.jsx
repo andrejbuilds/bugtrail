@@ -7,9 +7,11 @@ import IssuesSkeleton from "../components/issues/IssuesSkeleton";
 import ReportIssueModal from "../components/issues/ReportIssueModal";
 import AddIcon from "../components/shared/AddIcon";
 import ErrorState from "../components/shared/ErrorState";
+import { useBugTrail } from "../context/BugTrailContext";
 import "../styles/issues.css";
 
-function Issues({ projects, issues, status, error, onRetry, onCreateIssue }) {
+function Issues() {
+  const { projects, issues, status, error, retryData, createIssue } = useBugTrail();
   const [isReportIssueModalOpen, setIsReportIssueModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeStatus, setActiveStatus] = useState("Open");
@@ -74,7 +76,7 @@ function Issues({ projects, issues, status, error, onRetry, onCreateIssue }) {
         {status === "loading" ? (
           <IssuesSkeleton />
         ) : status === "error" ? (
-          <ErrorState message={error} onRetry={onRetry} />
+          <ErrorState message={error} onRetry={retryData} />
         ) : (
           <IssueList
             issues={issues}
@@ -86,7 +88,7 @@ function Issues({ projects, issues, status, error, onRetry, onCreateIssue }) {
       {isReportIssueModalOpen && (
         <ReportIssueModal
           onClose={closeReportIssueModal}
-          onCreateIssue={onCreateIssue}
+          onCreateIssue={createIssue}
           projects={projects}
         />
       )}

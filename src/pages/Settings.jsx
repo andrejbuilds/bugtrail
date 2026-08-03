@@ -1,6 +1,7 @@
 import { NavLink, useParams } from "react-router-dom";
 
 import default_profile from "../assets/default_profile.png";
+import { useBugTrail } from "../context/BugTrailContext";
 import "../styles/settings.css";
 
 const settingsSections = [
@@ -288,7 +289,8 @@ function DangerZoneSettings({ dataSource, onClearData, onRestoreSampleData }) {
   );
 }
 
-function Settings({ dataSource, onClearData, onRestoreSampleData }) {
+function Settings() {
+  const { dataSource, clearData, restoreSampleData } = useBugTrail();
   const { section = "profile" } = useParams();
   const settingsViews = {
     profile: <ProfileSettings />,
@@ -298,8 +300,8 @@ function Settings({ dataSource, onClearData, onRestoreSampleData }) {
     "danger-zone": (
       <DangerZoneSettings
         dataSource={dataSource}
-        onClearData={onClearData}
-        onRestoreSampleData={onRestoreSampleData}
+        onClearData={clearData}
+        onRestoreSampleData={restoreSampleData}
       />
     ),
   };

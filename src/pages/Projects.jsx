@@ -6,9 +6,11 @@ import ProjectTable from "../components/projects/ProjectTable";
 import ProjectsSkeleton from "../components/projects/ProjectsSkeleton";
 import AddIcon from "../components/shared/AddIcon";
 import ErrorState from "../components/shared/ErrorState";
+import { useBugTrail } from "../context/BugTrailContext";
 import "../styles/projects.css";
 
-function Projects({ projects, status, error, onRetry, onCreateProject }) {
+function Projects() {
+  const { projects, status, error, retryData, createProject } = useBugTrail();
   const [isCreateProjectModalOpen, setIsCreateProjectModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("All");
@@ -51,7 +53,7 @@ function Projects({ projects, status, error, onRetry, onCreateProject }) {
         {status === "loading" ? (
           <ProjectsSkeleton />
         ) : status === "error" ? (
-          <ErrorState message={error} onRetry={onRetry} />
+          <ErrorState message={error} onRetry={retryData} />
         ) : (
           <ProjectTable
             projects={projects}
@@ -63,7 +65,7 @@ function Projects({ projects, status, error, onRetry, onCreateProject }) {
       {isCreateProjectModalOpen && (
         <CreateProjectModal
           onClose={closeCreateProjectModal}
-          onCreateProject={onCreateProject}
+          onCreateProject={createProject}
         />
       )}
     </>
