@@ -1,4 +1,4 @@
-import ProjectStatusPill from "./ProjectStatusPill";
+import ProjectStatusPill from "../shared/ProjectStatusPill";
 
 function ProjectsTableRow({
   name,

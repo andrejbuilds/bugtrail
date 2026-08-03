@@ -1,4 +1,4 @@
-import IssueStatusPill from "./IssueStatusPill";
+import IssueStatusPill from "../shared/IssueStatusPill";
 
 function IssueListItem({
   issueId,

@@ -59,7 +59,7 @@ function ReportCard({
         <p className="report_card_project">{project}</p>
         <p className="report_card_counts">
           <span>{openCount} open</span>
-          <span className="report_counts_separator">•</span>
+          <span className="report_counts_separator">/</span>
           <span>{fixedCount} fixed</span>
         </p>
         <ReportProgressBar openWidth={openWidth} fixedWidth={fixedWidth} />
@@ -68,13 +68,13 @@ function ReportCard({
       <div className="report_card_footer">
         <p className="report_card_meta">
           Shared with {sharedWith} people
-          <span className="report_counts_separator">•</span>
+          <span className="report_counts_separator">/</span>
           Updated {updatedAt}
         </p>
-        <button type="button" className="report_copy_button">
+        <span className="report_copy_button">
           <LinkIcon />
           Copy link
-        </button>
+        </span>
       </div>
     </article>
   );

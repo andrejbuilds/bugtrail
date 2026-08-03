@@ -5,80 +5,68 @@ import projects_card_icon from "../assets/projects_card_icon.png";
 import issues_card_icon from "../assets/issues_card_icon.png";
 import resolved_card_icon from "../assets/resolved_card_icon.png";
 import client_card_icon from "../assets/client_card_icon.png";
-import CreateProjectModal from "../components/CreateProjectModal";
+import CreateProjectModal from "../components/projects/CreateProjectModal";
 import DashboardSummaryCard from "../components/DashboardSummaryCard";
+import AddIcon from "../components/shared/AddIcon";
 import "../styles/dashboard.css";
 
-const summaryCards = [
-  {
-    icon: projects_card_icon,
-    value: "0",
-    title: "Projects",
-    description: "Active QA projects",
-    pillText: "No Projects",
-    pillStyle: {
-      background: "#2a2b2e",
-      color: "#d9d9d9",
-    },
-  },
-  {
-    icon: issues_card_icon,
-    value: "0",
-    title: "Open Issues",
-    description: "Waiting to be fixed",
-    pillText: "All clear",
-    pillStyle: {
-      background: "rgba(245, 190, 78, 0.12)",
-      border: "1px solid rgba(245, 190, 78, 0.35)",
-      color: "#ffd36c",
-    },
-    iconClassName: "summary_card_icon_large",
-  },
-  {
-    icon: resolved_card_icon,
-    value: "0",
-    title: "Fixed Issues",
-    description: "Marked as resolved",
-    pillText: "0 resolved",
-    pillStyle: {
-      background: "rgba(83, 209, 127, 0.12)",
-      border: "1px solid rgba(83, 209, 127, 0.35)",
-      color: "#8ef0a5",
-    },
-  },
-  {
-    icon: client_card_icon,
-    value: "0",
-    title: "Client Reports",
-    description: "Reports ready to share",
-    pillText: "None ready",
-    pillStyle: {
-      background: "rgba(76, 157, 255, 0.12)",
-      border: "1px solid rgba(76, 157, 255, 0.35)",
-      color: "#79bbff",
-    },
-  },
-];
-
-function PlusIcon() {
-  return (
-    <svg
-      className="project_button_icon"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      <path d="M12 5V19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-      <path d="M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function Dashboard() {
+function Dashboard({ projects, issues, reports, onCreateProject }) {
   const [isCreateProjectModalOpen, setIsCreateProjectModalOpen] = useState(false);
   const openCreateProjectModal = () => setIsCreateProjectModalOpen(true);
   const closeCreateProjectModal = () => setIsCreateProjectModalOpen(false);
+  const openIssueCount = issues.filter((issue) => issue.status !== "Fixed").length;
+  const fixedIssueCount = issues.filter((issue) => issue.status === "Fixed").length;
+  const recentProjects = projects.slice(0, 3);
+  const summaryCards = [
+    {
+      icon: projects_card_icon,
+      value: String(projects.length),
+      title: "Projects",
+      description: "Active QA projects",
+      pillText: projects.length === 0 ? "No Projects" : `${projects.length} active`,
+      pillStyle: {
+        background: "#2a2b2e",
+        color: "#d9d9d9",
+      },
+    },
+    {
+      icon: issues_card_icon,
+      value: String(openIssueCount),
+      title: "Open Issues",
+      description: "Waiting to be fixed",
+      pillText: openIssueCount === 0 ? "All clear" : `${openIssueCount} open`,
+      pillStyle: {
+        background: "rgba(245, 190, 78, 0.12)",
+        border: "1px solid rgba(245, 190, 78, 0.35)",
+        color: "#ffd36c",
+      },
+      iconClassName: "summary_card_icon_large",
+    },
+    {
+      icon: resolved_card_icon,
+      value: String(fixedIssueCount),
+      title: "Fixed Issues",
+      description: "Marked as resolved",
+      pillText: `${fixedIssueCount} resolved`,
+      pillStyle: {
+        background: "rgba(83, 209, 127, 0.12)",
+        border: "1px solid rgba(83, 209, 127, 0.35)",
+        color: "#8ef0a5",
+      },
+    },
+    {
+      icon: client_card_icon,
+      value: String(reports.length),
+      title: "Client Reports",
+      description: "Reports ready to share",
+      pillText: reports.length === 0 ? "None ready" : `${reports.length} ready`,
+      pillStyle: {
+        background: "rgba(76, 157, 255, 0.12)",
+        border: "1px solid rgba(76, 157, 255, 0.35)",
+        color: "#79bbff",
+      },
+    },
+  ];
 
   return (
     <>
@@ -90,7 +78,7 @@ function Dashboard() {
           </div>
           <div className="header_two">
             <button className="new_project_btn" onClick={openCreateProjectModal}>
-              <PlusIcon />
+              <AddIcon />
               New Project
             </button>
           </div>
@@ -102,16 +90,39 @@ function Dashboard() {
         </div>
         <div className="recent_projects_area">
           <h3 className="recent_projects_h3">Recent Projects</h3>
-          <img className="recent_project_card_icon" src={projects_icon} alt="" />
-          <h2 className="recent_projects_qa">No QA projects yet</h2>
-          <p className="recent_projects_p">Create your first project to start tracking website issues</p>
-          <button className="recent_projects_btn" onClick={openCreateProjectModal}>
-            <PlusIcon />
-            Create Project
-          </button>
+          {recentProjects.length > 0 ? (
+            <div className="recent_projects_list">
+              {recentProjects.map((project) => (
+                <article className="recent_project_row" key={project.id}>
+                  <span className={`project_badge ${project.badgeClassName}`}>{project.badge}</span>
+                  <div>
+                    <h2>{project.name}</h2>
+                    <p>
+                      {project.openIssues} open, {project.fixedIssues} fixed
+                    </p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <>
+              <img className="recent_project_card_icon" src={projects_icon} alt="" />
+              <h2 className="recent_projects_qa">No QA projects yet</h2>
+              <p className="recent_projects_p">Create your first project to start tracking website issues</p>
+              <button className="recent_projects_btn" onClick={openCreateProjectModal}>
+                <AddIcon />
+                Create Project
+              </button>
+            </>
+          )}
         </div>
       </div>
-      {isCreateProjectModalOpen && <CreateProjectModal onClose={closeCreateProjectModal} />}
+      {isCreateProjectModalOpen && (
+        <CreateProjectModal
+          onClose={closeCreateProjectModal}
+          onCreateProject={onCreateProject}
+        />
+      )}
     </>
   );
 }

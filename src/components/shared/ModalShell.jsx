@@ -15,6 +15,7 @@ function ModalShell({
   primaryAction,
   secondaryAction,
   onClose,
+  formId,
   size = "default",
 }) {
   return (
@@ -38,7 +39,7 @@ function ModalShell({
             <button type="button" className="modal_secondary_button" onClick={onClose}>
               {secondaryAction}
             </button>
-            <button type="button" className="modal_primary_button">
+            <button type={formId ? "submit" : "button"} form={formId} className="modal_primary_button">
               {primaryAction}
             </button>
           </div>
