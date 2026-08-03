@@ -85,7 +85,10 @@ function CreateProjectModal({
       : initialData.teammates ?? "",
   });
   const [errors, setErrors] = useState({});
+  const [submissionError, setSubmissionError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const formId = "create-project-form";
+  const submittingAction = primaryAction === "Create project" ? "Creating..." : "Saving...";
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -101,10 +104,18 @@ function CreateProjectModal({
         [name]: "",
       }));
     }
+
+    if (submissionError) {
+      setSubmissionError("");
+    }
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
+
+    if (isSubmitting) {
+      return;
+    }
 
     const validationErrors = validateProject(formData);
 
@@ -113,18 +124,27 @@ function CreateProjectModal({
       return;
     }
 
-    onCreateProject({
-      name: formData.name.trim(),
-      website: formData.website.trim(),
-      description: formData.description.trim(),
-      visibility: formData.visibility,
-      status: formData.status,
-      teammates: formData.teammates
-        .split(",")
-        .map((email) => email.trim())
-        .filter(Boolean),
-    });
-    onClose();
+    setIsSubmitting(true);
+    setSubmissionError("");
+
+    try {
+      await onCreateProject({
+        name: formData.name.trim(),
+        website: formData.website.trim(),
+        description: formData.description.trim(),
+        visibility: formData.visibility,
+        status: formData.status,
+        teammates: formData.teammates
+          .split(",")
+          .map((email) => email.trim())
+          .filter(Boolean),
+      });
+      onClose();
+    } catch (error) {
+      setSubmissionError(error.message || "Could not save project.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -132,12 +152,18 @@ function CreateProjectModal({
       title={title}
       description={description}
       footerNote={footerNote}
-      primaryAction={primaryAction}
+      primaryAction={isSubmitting ? submittingAction : primaryAction}
       secondaryAction="Cancel"
       onClose={onClose}
       formId={formId}
+      isSubmitting={isSubmitting}
     >
       <form id={formId} className="modal_form" onSubmit={handleSubmit} noValidate>
+        {submissionError && (
+          <p className="form_error form_submission_error" role="alert">
+            {submissionError}
+          </p>
+        )}
         <label className="modal_field">
           <span>Project name</span>
           <input

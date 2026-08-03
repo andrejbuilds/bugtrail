@@ -3,10 +3,12 @@ import { useState } from "react";
 import CreateProjectModal from "../components/projects/CreateProjectModal";
 import ProjectFilters from "../components/projects/ProjectFilters";
 import ProjectTable from "../components/projects/ProjectTable";
+import ProjectsSkeleton from "../components/projects/ProjectsSkeleton";
 import AddIcon from "../components/shared/AddIcon";
+import ErrorState from "../components/shared/ErrorState";
 import "../styles/projects.css";
 
-function Projects({ projects, onCreateProject }) {
+function Projects({ projects, status, error, onRetry, onCreateProject }) {
   const [isCreateProjectModalOpen, setIsCreateProjectModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("All");
@@ -46,7 +48,17 @@ function Projects({ projects, onCreateProject }) {
           onFilterChange={setActiveFilter}
         />
 
-        <ProjectTable projects={projects} filteredProjects={filteredProjects} />
+        {status === "loading" ? (
+          <ProjectsSkeleton />
+        ) : status === "error" ? (
+          <ErrorState message={error} onRetry={onRetry} />
+        ) : (
+          <ProjectTable
+            projects={projects}
+            filteredProjects={filteredProjects}
+            onCreateProject={openCreateProjectModal}
+          />
+        )}
       </div>
       {isCreateProjectModalOpen && (
         <CreateProjectModal

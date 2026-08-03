@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import IssueListItem from "../components/issues/IssueListItem";
 import CreateProjectModal from "../components/projects/CreateProjectModal";
 import ReportCard from "../components/reports/ReportCard";
 import ProjectStatusPill from "../components/shared/ProjectStatusPill";
+import NotFound from "./NotFound";
 import "../styles/detail.css";
 
 function ProjectDetail({ projects, issues, reports, onUpdateProject, onDeleteProject }) {
@@ -14,7 +15,14 @@ function ProjectDetail({ projects, issues, reports, onUpdateProject, onDeletePro
   const project = projects.find((item) => item.id === projectId);
 
   if (!project) {
-    return <Navigate to="/projects" replace />;
+    return (
+      <NotFound
+        title="Project not found"
+        description="The project you requested does not exist."
+        returnTo="/projects"
+        returnLabel="Return to projects"
+      />
+    );
   }
 
   const projectIssues = issues.filter((issue) => issue.projectId === project.id);

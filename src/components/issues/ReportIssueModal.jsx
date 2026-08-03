@@ -12,11 +12,13 @@ const initialFormData = {
   page: "",
   description: "",
   steps: "",
-  labels: "",
+  labels: [],
+  screenshot: null,
 };
 
 const validSeverities = ["Low", "Medium", "High", "Critical"];
 const validStatuses = ["Open", "In Review", "Fixed"];
+const maxScreenshotSize = 1024 * 1024;
 
 function validateIssue(values, projects) {
   const validationErrors = {};
@@ -57,6 +59,16 @@ function validateIssue(values, projects) {
   return validationErrors;
 }
 
+function readFileAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.addEventListener("load", () => resolve(reader.result));
+    reader.addEventListener("error", () => reject(new Error("Could not read screenshot file.")));
+    reader.readAsDataURL(file);
+  });
+}
+
 function ReportIssueModal({
   onClose,
   onCreateIssue,
@@ -72,11 +84,18 @@ function ReportIssueModal({
     projectId: projects[0]?.id ?? "",
     ...initialData,
     labels: Array.isArray(initialData.labels)
-      ? initialData.labels.join(", ")
-      : initialData.labels ?? initialFormData.labels,
+      ? initialData.labels
+      : initialData.labels
+        ? [initialData.labels]
+        : initialFormData.labels,
+    screenshot: initialData.screenshot ?? initialFormData.screenshot,
   });
+  const [labelInput, setLabelInput] = useState("");
   const [errors, setErrors] = useState({});
+  const [submissionError, setSubmissionError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const formId = "report-issue-form";
+  const submittingAction = primaryAction === "Report issue" ? "Reporting..." : "Saving...";
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -92,10 +111,103 @@ function ReportIssueModal({
         [name]: "",
       }));
     }
+
+    if (submissionError) {
+      setSubmissionError("");
+    }
   }
 
-  function handleSubmit(event) {
+  function handleLabelAdd() {
+    const nextLabel = labelInput.trim();
+
+    if (!nextLabel) {
+      return;
+    }
+
+    setFormData((currentFormData) => {
+      const existingLabels = currentFormData.labels.map((label) => label.toLowerCase());
+
+      if (existingLabels.includes(nextLabel.toLowerCase())) {
+        return currentFormData;
+      }
+
+      return {
+        ...currentFormData,
+        labels: [...currentFormData.labels, nextLabel],
+      };
+    });
+    setLabelInput("");
+  }
+
+  function handleLabelKeyDown(event) {
+    if (event.key === "Enter" || event.key === ",") {
+      event.preventDefault();
+      handleLabelAdd();
+    }
+  }
+
+  function handleLabelRemove(labelToRemove) {
+    setFormData((currentFormData) => ({
+      ...currentFormData,
+      labels: currentFormData.labels.filter((label) => label !== labelToRemove),
+    }));
+  }
+
+  async function handleScreenshotChange(event) {
+    const selectedFile = event.target.files?.[0];
+
+    if (!selectedFile) {
+      return;
+    }
+
+    if (!selectedFile.type.startsWith("image/")) {
+      setErrors((currentErrors) => ({
+        ...currentErrors,
+        screenshot: "Screenshot must be an image file.",
+      }));
+      event.target.value = "";
+      return;
+    }
+
+    if (selectedFile.size > maxScreenshotSize) {
+      setErrors((currentErrors) => ({
+        ...currentErrors,
+        screenshot: "Screenshot must be 1 MB or smaller.",
+      }));
+      event.target.value = "";
+      return;
+    }
+
+    try {
+      const dataUrl = await readFileAsDataUrl(selectedFile);
+
+      setFormData((currentFormData) => ({
+        ...currentFormData,
+        screenshot: {
+          name: selectedFile.name,
+          size: selectedFile.size,
+          type: selectedFile.type,
+          dataUrl,
+        },
+      }));
+      setErrors((currentErrors) => ({
+        ...currentErrors,
+        screenshot: "",
+      }));
+    } catch (error) {
+      setErrors((currentErrors) => ({
+        ...currentErrors,
+        screenshot: error.message,
+      }));
+    }
+  }
+
+  async function handleSubmit(event) {
     event.preventDefault();
+
+    if (isSubmitting) {
+      return;
+    }
 
     const validationErrors = validateIssue(formData, projects);
 
@@ -104,22 +216,34 @@ function ReportIssueModal({
       return;
     }
 
-    onCreateIssue({
-      projectId: formData.projectId,
-      severity: formData.severity,
-      status: formData.status,
-      title: formData.title.trim(),
-      assignee: formData.assignee,
-      device: formData.device.trim(),
-      page: formData.page.trim(),
-      description: formData.description.trim(),
-      steps: formData.steps.trim(),
-      labels: formData.labels
-        .split(",")
-        .map((label) => label.trim())
-        .filter(Boolean),
-    });
-    onClose();
+    const pendingLabel = labelInput.trim();
+    const labels = pendingLabel
+      ? Array.from(new Set([...formData.labels, pendingLabel]))
+      : formData.labels;
+
+    setIsSubmitting(true);
+    setSubmissionError("");
+
+    try {
+      await onCreateIssue({
+        projectId: formData.projectId,
+        severity: formData.severity,
+        status: formData.status,
+        title: formData.title.trim(),
+        assignee: formData.assignee,
+        device: formData.device.trim(),
+        page: formData.page.trim(),
+        description: formData.description.trim(),
+        steps: formData.steps.trim(),
+        labels,
+        screenshot: formData.screenshot,
+      });
+      onClose();
+    } catch (error) {
+      setSubmissionError(error.message || "Could not save issue.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -127,13 +251,19 @@ function ReportIssueModal({
       title={title}
       description={description}
       footerNote={footerNote}
-      primaryAction={primaryAction}
+      primaryAction={isSubmitting ? submittingAction : primaryAction}
       secondaryAction="Cancel"
       onClose={onClose}
       formId={formId}
       size="large"
+      isSubmitting={isSubmitting}
     >
       <form id={formId} className="modal_form report_issue_form" onSubmit={handleSubmit} noValidate>
+        {submissionError && (
+          <p className="form_error form_submission_error" role="alert">
+            {submissionError}
+          </p>
+        )}
         <div className="modal_form_grid">
           <label className="modal_field">
             <span>Project</span>
@@ -288,22 +418,44 @@ function ReportIssueModal({
         <div className="modal_form_grid">
           <label className="modal_field">
             <span>Labels</span>
-            <input
-              name="labels"
-              type="text"
-              placeholder="ui, mobile, regression"
-              value={formData.labels}
-              onChange={handleChange}
-            />
+            <div className="modal_token_input">
+              {formData.labels.map((label) => (
+                <button
+                  key={label}
+                  type="button"
+                  className="modal_token blue modal_token_remove"
+                  onClick={() => handleLabelRemove(label)}
+                  aria-label={`Remove ${label} label`}
+                >
+                  {label}
+                  <span aria-hidden="true">x</span>
+                </button>
+              ))}
+              <input
+                type="text"
+                placeholder="Add label"
+                value={labelInput}
+                onChange={(event) => setLabelInput(event.target.value)}
+                onBlur={handleLabelAdd}
+                onKeyDown={handleLabelKeyDown}
+              />
+            </div>
+            <small className="form_help">Press Enter or comma to add a label.</small>
           </label>
 
-          <label className="modal_field">
+          <div className="modal_field">
             <span>Screenshot</span>
-            <div className="modal_upload_box">
-              <strong>Attach screenshot</strong>
-              <small>PNG, JPG, or WebP</small>
-            </div>
-          </label>
+            <label className="modal_upload_box">
+              <input type="file" accept="image/png,image/jpeg,image/webp,image/gif" onChange={handleScreenshotChange} />
+              <strong>{formData.screenshot?.name ?? "Attach screenshot"}</strong>
+              <small>{formData.screenshot ? "Selected image file" : "PNG, JPG, WebP, or GIF up to 1 MB"}</small>
+            </label>
+            {errors.screenshot && (
+              <p className="form_error" role="alert">
+                {errors.screenshot}
+              </p>
+            )}
+          </div>
         </div>
       </form>
     </ModalShell>

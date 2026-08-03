@@ -3,11 +3,13 @@ import { useState } from "react";
 import IssueFilters from "../components/issues/IssueFilters";
 import IssueList from "../components/issues/IssueList";
 import IssueTabs from "../components/issues/IssueTabs";
+import IssuesSkeleton from "../components/issues/IssuesSkeleton";
 import ReportIssueModal from "../components/issues/ReportIssueModal";
 import AddIcon from "../components/shared/AddIcon";
+import ErrorState from "../components/shared/ErrorState";
 import "../styles/issues.css";
 
-function Issues({ projects, issues, onCreateIssue }) {
+function Issues({ projects, issues, status, error, onRetry, onCreateIssue }) {
   const [isReportIssueModalOpen, setIsReportIssueModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeStatus, setActiveStatus] = useState("Open");
@@ -69,7 +71,17 @@ function Issues({ projects, issues, onCreateIssue }) {
           onAssigneeFilterChange={setAssigneeFilter}
         />
 
-        <IssueList issues={issues} filteredIssues={filteredIssues} />
+        {status === "loading" ? (
+          <IssuesSkeleton />
+        ) : status === "error" ? (
+          <ErrorState message={error} onRetry={onRetry} />
+        ) : (
+          <IssueList
+            issues={issues}
+            filteredIssues={filteredIssues}
+            onReportIssue={openReportIssueModal}
+          />
+        )}
       </div>
       {isReportIssueModalOpen && (
         <ReportIssueModal

@@ -238,7 +238,7 @@ function NotificationsSettings() {
   );
 }
 
-function DangerZoneSettings() {
+function DangerZoneSettings({ dataSource, onClearData, onRestoreSampleData }) {
   return (
     <section className="settings_panel settings_danger_panel">
       <div className="settings_panel_header">
@@ -267,11 +267,20 @@ function DangerZoneSettings() {
         </article>
         <article className="settings_danger_row critical">
           <div>
-            <h3>Delete workspace</h3>
-            <p>Delete all projects, issues, reports, and member access.</p>
+            <h3>Clear workspace data</h3>
+            <p>Remove all projects, issues, and reports from {dataSource}.</p>
           </div>
-          <button type="button" className="settings_danger_button">
-            Delete
+          <button type="button" className="settings_danger_button" onClick={onClearData}>
+            Clear data
+          </button>
+        </article>
+        <article className="settings_danger_row">
+          <div>
+            <h3>Restore sample data</h3>
+            <p>Replace the current workspace with a small project, issue, and report dataset.</p>
+          </div>
+          <button type="button" className="settings_secondary_button" onClick={onRestoreSampleData}>
+            Restore
           </button>
         </article>
       </div>
@@ -279,16 +288,21 @@ function DangerZoneSettings() {
   );
 }
 
-const settingsViews = {
-  profile: <ProfileSettings />,
-  workspace: <WorkspaceSettings />,
-  members: <MembersSettings />,
-  notifications: <NotificationsSettings />,
-  "danger-zone": <DangerZoneSettings />,
-};
-
-function Settings() {
+function Settings({ dataSource, onClearData, onRestoreSampleData }) {
   const { section = "profile" } = useParams();
+  const settingsViews = {
+    profile: <ProfileSettings />,
+    workspace: <WorkspaceSettings />,
+    members: <MembersSettings />,
+    notifications: <NotificationsSettings />,
+    "danger-zone": (
+      <DangerZoneSettings
+        dataSource={dataSource}
+        onClearData={onClearData}
+        onRestoreSampleData={onRestoreSampleData}
+      />
+    ),
+  };
   const activeView = settingsViews[section] ?? settingsViews.profile;
 
   return (

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import EmptyState from "../shared/EmptyState";
 import IssueListItem from "./IssueListItem";
 
-function IssueList({ issues, filteredIssues }) {
+function IssueList({ issues, filteredIssues, onReportIssue }) {
   return (
     <div className="issues_list">
       {filteredIssues.length > 0 ? (
@@ -21,6 +21,8 @@ function IssueList({ issues, filteredIssues }) {
               ? "Report an issue when you find something that needs a fix."
               : "Try changing the search, tab, or filters."
           }
+          actionLabel={issues.length === 0 ? "Report issue" : undefined}
+          onAction={issues.length === 0 ? onReportIssue : undefined}
         />
       )}
     </div>

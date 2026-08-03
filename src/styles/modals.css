@@ -228,6 +228,22 @@
   line-height: 1;
 }
 
+.modal_token_remove {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border-radius: 7px;
+  font-family: "Montserrat", system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.modal_token_remove span {
+  color: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+}
+
 .modal_token.blue {
   border-color: rgba(77, 141, 255, 0.28);
   background: rgba(20, 75, 175, 0.16);
@@ -258,6 +274,16 @@
   border: 1px dashed #4a4d55;
   border-radius: 7px;
   background: rgba(255, 255, 255, 0.018);
+  cursor: pointer;
+}
+
+.modal_upload_box:hover {
+  border-color: #626671;
+  background: rgba(255, 255, 255, 0.028);
+}
+
+.modal_upload_box input {
+  display: none;
 }
 
 .modal_upload_box strong {
@@ -341,6 +367,24 @@
 
 .modal_primary_button:hover {
   background: #2b7dff;
+}
+
+.modal_icon_button:disabled,
+.modal_secondary_button:disabled,
+.modal_primary_button:disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
+}
+
+.modal_primary_button:disabled:hover {
+  background: #176dff;
+}
+
+.form_submission_error {
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 95, 95, 0.36);
+  border-radius: 7px;
+  background: rgba(135, 19, 19, 0.18);
 }
 
 @media (max-width: 768px) {

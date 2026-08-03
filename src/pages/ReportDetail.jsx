@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import CreateReportModal from "../components/reports/CreateReportModal";
 import ReportProgressBar from "../components/reports/ReportProgressBar";
+import NotFound from "./NotFound";
 import "../styles/detail.css";
 
 function ReportDetail({ projects, reports, issues, onUpdateReport, onDeleteReport }) {
@@ -12,7 +13,14 @@ function ReportDetail({ projects, reports, issues, onUpdateReport, onDeleteRepor
   const report = reports.find((item) => item.id === reportId);
 
   if (!report) {
-    return <Navigate to="/reports" replace />;
+    return (
+      <NotFound
+        title="Report not found"
+        description="The report you requested does not exist."
+        returnTo="/reports"
+        returnLabel="Return to reports"
+      />
+    );
   }
 
   const reportIssues = issues.filter((issue) => issue.projectId === report.projectId);

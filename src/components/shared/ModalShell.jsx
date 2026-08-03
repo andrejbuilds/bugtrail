@@ -17,6 +17,8 @@ function ModalShell({
   onClose,
   formId,
   size = "default",
+  isSubmitting = false,
+  isPrimaryDisabled = false,
 }) {
   return (
     <div className="modal_overlay">
@@ -26,7 +28,13 @@ function ModalShell({
             <h2 id="modal_title">{title}</h2>
             <p>{description}</p>
           </div>
-          <button type="button" className="modal_icon_button" aria-label="Close modal" onClick={onClose}>
+          <button
+            type="button"
+            className="modal_icon_button"
+            aria-label="Close modal"
+            onClick={onClose}
+            disabled={isSubmitting}
+          >
             <CloseIcon />
           </button>
         </header>
@@ -36,10 +44,15 @@ function ModalShell({
         <footer className="modal_footer">
           <p>{footerNote}</p>
           <div className="modal_footer_actions">
-            <button type="button" className="modal_secondary_button" onClick={onClose}>
+            <button type="button" className="modal_secondary_button" onClick={onClose} disabled={isSubmitting}>
               {secondaryAction}
             </button>
-            <button type={formId ? "submit" : "button"} form={formId} className="modal_primary_button">
+            <button
+              type={formId ? "submit" : "button"}
+              form={formId}
+              className="modal_primary_button"
+              disabled={isSubmitting || isPrimaryDisabled}
+            >
               {primaryAction}
             </button>
           </div>

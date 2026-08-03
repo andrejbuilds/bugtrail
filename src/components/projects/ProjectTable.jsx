@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import EmptyState from "../shared/EmptyState";
 import ProjectsTableRow from "./ProjectsTableRow";
 
-function ProjectTable({ projects, filteredProjects }) {
+function ProjectTable({ projects, filteredProjects, onCreateProject }) {
   return (
     <div className="projects_table_shell">
       <div className="projects_table">
@@ -32,6 +32,8 @@ function ProjectTable({ projects, filteredProjects }) {
                   ? "Create your first QA project to start tracking issues."
                   : "Try changing the search or project filter."
               }
+              actionLabel={projects.length === 0 ? "Create project" : undefined}
+              onAction={projects.length === 0 ? onCreateProject : undefined}
             />
           )}
         </div>

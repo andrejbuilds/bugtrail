@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import ReportIssueModal from "../components/issues/ReportIssueModal";
 import IssueStatusPill from "../components/shared/IssueStatusPill";
 import defaultProfile from "../assets/default_profile.png";
+import NotFound from "./NotFound";
 import "../styles/detail.css";
 
 function IssueDetail({ projects, issues, onUpdateIssue, onDeleteIssue, onAddIssueComment }) {
@@ -14,7 +15,14 @@ function IssueDetail({ projects, issues, onUpdateIssue, onDeleteIssue, onAddIssu
   const issue = issues.find((item) => item.id === issueId);
 
   if (!issue) {
-    return <Navigate to="/issues" replace />;
+    return (
+      <NotFound
+        title="Issue not found"
+        description="The issue you requested does not exist."
+        returnTo="/issues"
+        returnLabel="Return to issues"
+      />
+    );
   }
 
   function handleDelete() {
@@ -67,10 +75,20 @@ function IssueDetail({ projects, issues, onUpdateIssue, onDeleteIssue, onAddIssu
         <div className="issue_detail_layout">
           <main>
             <section className="issue_screenshot_placeholder">
-              <div>
+              <div className={issue.screenshot?.dataUrl ? "issue_screenshot_preview" : ""}>
                 <span className="issue_screenshot_marker">1</span>
-                <h2>{issue.page || "Page reference"}</h2>
-                <p>{issue.device || "No browser or device captured."}</p>
+                {issue.screenshot?.dataUrl ? (
+                  <img src={issue.screenshot.dataUrl} alt={issue.screenshot.name} />
+                ) : (
+                  <>
+                    <h2>{issue.screenshot?.name || issue.page || "Page reference"}</h2>
+                    <p>
+                      {issue.screenshot
+                        ? "Screenshot attached"
+                        : issue.device || "No browser or device captured."}
+                    </p>
+                  </>
+                )}
               </div>
             </section>
 
